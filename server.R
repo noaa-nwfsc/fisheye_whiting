@@ -223,7 +223,13 @@ shinyServer(function(input, output, session) {
           q75 = ifelse(grepl('DEFLYR', ylab), q75/DEFL, q75),
           ylab = ifelse(grepl('DEFLYR', ylab), 
                         gsub("DEFLYR", input$deflYearselect, ylab),
-                        ylab)) 
+                        ylab))  |> 
+          mutate(upper = case_when(Statistic == 'Mean' ~ Value + Variance,
+                                   Statistic == 'Median' ~ q75,
+                                   Statistic == 'Total' ~ Value),
+                 lower = case_when(Statistic == 'Mean' ~ Value - Variance,
+                                   Statistic == 'Median' ~ q25,
+                                   Statistic == 'Total' ~ Value))
       
     } else if(input$tab_type == "By product type") {
       
@@ -242,7 +248,13 @@ shinyServer(function(input, output, session) {
           q75 = ifelse(grepl('DEFLYR', ylab), q75/DEFL, q75),
           ylab = ifelse(grepl('DEFLYR', ylab), 
                         gsub("DEFLYR", input$deflYearselect, ylab),
-                        ylab)) 
+                        ylab))  |> 
+        mutate(upper = case_when(Statistic == 'Mean' ~ Value + Variance,
+                                 Statistic == 'Median' ~ q75,
+                                 Statistic == 'Total' ~ Value),
+               lower = case_when(Statistic == 'Mean' ~ Value - Variance,
+                                 Statistic == 'Median' ~ q25,
+                                 Statistic == 'Total' ~ Value))
       
     } else if (input$tab_type == "Total Allowable Catch Utilization") {
       data %>%
