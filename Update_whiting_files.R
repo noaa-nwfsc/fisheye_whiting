@@ -1,29 +1,53 @@
 library(here)
 
 # Display list of available date stamp folders for whiting
-dir("R:/Confidential/FISHEyE/data/Whiting")
-whitingdir <- "R:/Confidential/FISHEyE/data/Whiting/2025-03-13"
-whitingfiles <- list.files(whitingdir)[grepl('RDS', list.files(whitingdir))]
+whitingdir_base <- file.path(
+    "G:",
+    "Shared drives",
+    "NMFS NWC FRAM EDC CE (contains MSA Confidential Data)",
+    "FISHEyE",
+    "data",
+    "Whiting"
+)
 
-file.path(whitingdir, whitingfiles)
+dir(whitingdir_base)
+
+date_stamp <- "2026-05-14"
+
+whitingdir <- file.path(whitingdir_base, date_stamp)
+
+whitingfiles <- list.files(whitingdir)[grepl('RDS', list.files(whitingdir))]
 
 getwd()
 
-try(if(length(whitingfiles) == 0) stop("There aren't any files to move in that folder"))
+try(
+    if (length(whitingfiles) == 0) {
+        stop("There aren't any files to move in that folder")
+    }
+)
 
 
 # copy all of the whiting files from fisheyedataprep output folder to app folder
-for(wfiles in whitingfiles) {
-
+for (wfiles in whitingfiles) {
     file.copy(
         from = file.path(whitingdir, whitingfiles),
-        to  = here::here("whiting"),
-        overwrite = T)
-
+        to = here::here(),
+        overwrite = T
+    )
 }
 
 # copy gdp_defl from the performance metrics app into whiting app
 file.copy(
-        from = file.path("PerformanceMetrics/data/gdp_defl.RData"),
-        to = "Whiting",
-        overwrite = T)
+    from = file.path(
+        "G:",
+        "Shared drives",
+        "NMFS NWC FRAM EDC CE (contains MSA Confidential Data)",
+        "FISHEyE",
+        "data",
+        "PerformanceMetrics",
+        "2026-04-07",
+        "gdp_defl.RData"
+    ),
+    to = here::here(),
+    overwrite = T
+)
