@@ -1,13 +1,22 @@
 library(here)
 
 # Display list of available date stamp folders for whiting
-dir(
-    "G:/Shared drives/NMFS NWC FRAM EDC CE (contains MSA Confidential Data)/FISHEyE/data/Whiting"
+whitingdir_base <- file.path(
+    "G:",
+    "Shared drives",
+    "NMFS NWC FRAM EDC CE (contains MSA Confidential Data)",
+    "FISHEyE",
+    "data",
+    "Whiting"
 )
-whitingdir <- "G:/Shared drives/NMFS NWC FRAM EDC CE (contains MSA Confidential Data)/FISHEyE/data/Whiting/2026-03-27"
-whitingfiles <- list.files(whitingdir)[grepl('RDS', list.files(whitingdir))]
 
-file.path(whitingdir, whitingfiles)
+dir(whitingdir_base)
+
+date_stamp <- "2026-05-14"
+
+whitingdir <- file.path(whitingdir_base, date_stamp)
+
+whitingfiles <- list.files(whitingdir)[grepl('RDS', list.files(whitingdir))]
 
 getwd()
 
@@ -30,7 +39,14 @@ for (wfiles in whitingfiles) {
 # copy gdp_defl from the performance metrics app into whiting app
 file.copy(
     from = file.path(
-        "G:/Shared drives/NMFS NWC FRAM EDC CE (contains MSA Confidential Data)/FISHEyE/data/PerformanceMetrics/2026-03-31/gdp_defl.RData"
+        "G:",
+        "Shared drives",
+        "NMFS NWC FRAM EDC CE (contains MSA Confidential Data)",
+        "FISHEyE",
+        "data",
+        "PerformanceMetrics",
+        "2026-04-07",
+        "gdp_defl.RData"
     ),
     to = here::here(),
     overwrite = T
