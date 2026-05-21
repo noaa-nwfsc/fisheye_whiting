@@ -644,6 +644,7 @@ shinyServer(function(input, output, session) {
             if (is.null(filtered())) {
                 return()
             }
+
             ggplot(filtered(), aes(x = Year, y = Value, group = Sector)) +
                 scale_fill_manual(values = lineColor) +
                 scale_color_manual(values = lineColor) +
@@ -661,7 +662,12 @@ shinyServer(function(input, output, session) {
                 ) +
                 facet_wrap(~ylab, scales = 'free_y', ncol = 2) +
                 labs(y = input$statInput) +
-                scale_x_continuous(breaks = pretty_breaks()) +
+                scale_x_continuous(
+                    breaks = scales::pretty_breaks(),
+                    minor_breaks = function(x) {
+                        seq(floor(min(x)), ceiling(max(x)), by = 1)
+                    }
+                ) +
                 expand_limits(y = 0)
         },
         height = 800,
@@ -691,7 +697,12 @@ shinyServer(function(input, output, session) {
                 ) +
                 facet_wrap(~ylab, scales = 'free_y', ncol = 2) +
                 labs(y = input$stat2Input) +
-                scale_x_continuous(breaks = pretty_breaks())
+                scale_x_continuous(
+                    breaks = scales::pretty_breaks(),
+                    minor_breaks = function(x) {
+                        seq(floor(min(x)), ceiling(max(x)), by = 1)
+                    }
+                )
         },
         height = 800,
         width = 1100
