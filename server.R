@@ -644,8 +644,8 @@ shinyServer(function(input, output, session) {
             if (is.null(filtered())) {
                 return()
             }
-
-            ggplot(filtered(), aes(x = Year, y = Value, group = Sector)) +
+            subset(filtered(), !is.na(Value)) |>
+                ggplot(aes(x = Year, y = Value, group = Sector)) +
                 scale_fill_manual(values = lineColor) +
                 scale_color_manual(values = lineColor) +
                 theme_minimal() +
@@ -671,7 +671,7 @@ shinyServer(function(input, output, session) {
                 expand_limits(y = 0)
         },
         height = 800,
-        width = 1100
+        # width = 1100
     )
 
     ##Plot for the product tab
@@ -680,7 +680,8 @@ shinyServer(function(input, output, session) {
             if (is.null(filtered())) {
                 return()
             }
-            ggplot(filtered(), aes(x = Year, y = Value, group = Sector)) +
+            subset(filtered(), !is.na(Value)) |>
+                ggplot(aes(x = Year, y = Value, group = Sector)) +
                 scale_fill_manual(values = lineColor) +
                 scale_color_manual(values = lineColor) +
                 theme_minimal() +
@@ -705,7 +706,7 @@ shinyServer(function(input, output, session) {
                 )
         },
         height = 800,
-        width = 1100
+        # width = 1100
     )
 
     ##Plot for Utilized TAC
@@ -716,7 +717,8 @@ shinyServer(function(input, output, session) {
                 return()
             }
 
-            dat <- filtered()
+            dat <- filtered() |>
+                subset(!is.na(Value))
 
             dat$Metric <- factor(
                 dat$Metric,
@@ -759,7 +761,6 @@ shinyServer(function(input, output, session) {
                     position = "stack",
                     stat = "identity",
                     alpha = 0.01,
-                    size = 1.25,
                     width = 0.9
                 ) +
 
