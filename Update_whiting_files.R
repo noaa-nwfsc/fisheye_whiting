@@ -12,7 +12,7 @@ whitingdir_base <- file.path(
 
 dir(whitingdir_base)
 
-date_stamp <- "2026-06-02"
+date_stamp <- "2026-06-03"
 
 whitingdir <- file.path(whitingdir_base, date_stamp)
 
