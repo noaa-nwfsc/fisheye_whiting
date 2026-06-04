@@ -680,8 +680,7 @@ shinyServer(function(input, output, session) {
             if (is.null(filtered())) {
                 return()
             }
-            subset(filtered(), !is.na(Value)) |>
-                ggplot(aes(x = Year, y = Value, group = Sector)) +
+            ggplot(filtered(), aes(x = Year, y = Value, group = Sector)) +
                 scale_fill_manual(values = lineColor) +
                 scale_color_manual(values = lineColor) +
                 theme_minimal() +
@@ -690,12 +689,12 @@ shinyServer(function(input, output, session) {
                     axis.text = element_text(size = 12),
                     strip.text = element_text(size = 14)
                 ) +
-                geom_point(aes(color = Sector), size = point_size) +
-                geom_line(aes(color = Sector), linewidth = line_size) +
                 geom_ribbon(
                     aes(ymax = upper, ymin = lower, fill = Sector),
                     alpha = 0.25
                 ) +
+                geom_point(aes(color = Sector), size = point_size) +
+                geom_line(aes(color = Sector), linewidth = line_size) +
                 facet_wrap(~ylab, scales = 'free_y', ncol = 2) +
                 labs(y = input$stat2Input) +
                 scale_x_continuous(
